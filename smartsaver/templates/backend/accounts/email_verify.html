@@ -1,0 +1,35 @@
+{% extends 'backend/account_succor.html' %}
+
+{% block title %} Login {% endblock %}
+
+{% block options %} Enter the OTP Sent to your Email {% endblock %}
+
+{% block content %}
+
+            <div class="card-body">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+              {% for category, message in messages %}
+                <div style="color: white;" align="center" class="alert alert-{{ category }}" role="alert">
+                  {{message}} 
+                </div>
+              {% endfor %}
+              {% endwith %}
+
+              <form action="/account/verify-email" method="POST" role="form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <div class="mb-3">
+                  <input type="text" class="form-control" name="otp" placeholder="Enter a Valid OTP here" aria-label="otp">
+                </div>
+                <div class="text-center">
+                  <button  class="btn bg-gradient-dark w-100 my-4 mb-2">Confirm Email</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+  {% endblock %}

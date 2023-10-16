@@ -1,0 +1,311 @@
+{% extends 'backend/backend_succor.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block user %} {{user}} {% endblock %}
+
+  {% block content %}
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div style="color: white;" class="alert alert-{{ category }}" role="alert">
+      <strong>Heya {{ user }}: </strong> {{ message }} !</span>
+    </div>
+  {% endfor %}
+  {% endwith %}
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Wallet Current Balance</p>
+                    <h5 class="font-weight-bolder">
+                      ${{ current_balance }}
+                    </h5>
+                    <p class="mb-0">
+                      <!-- <span class="text-success text-sm font-weight-bolder">+55%</span> -->
+                      Your current Wallet balance
+                    </p>
+                  </div>
+                </div>
+                <!-- <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                    <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Wallet Update Timestamp</p>
+                    <h5 class="font-weight-bolder">
+                      {{ updated_at }}
+                    </h5>
+                    <p class="mb-0">
+                      <!-- <span class="text-success text-sm font-weight-bolder">+3%</span> -->
+                      Wallet Timestamp for changes
+
+                    </p>
+                  </div>
+                </div>
+                <!-- <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
+
+                    <i class="ni ni-world text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Wallet Creation Timestamp</p>
+                    <h5 class="font-weight-bolder">
+                      {{ created_at }}
+                    </h5>
+                    <p class="mb-0">
+                      <!-- <span class="text-danger text-sm font-weight-bolder">-2%</span> -->
+                      Wallet Timestamp
+
+                    </p>
+                  </div>
+                </div>
+                <!-- <div class="col-4 text-end">
+
+                  <div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
+                    <i class="ni ni-world text-lg opacity-10" aria-hidden="true"></i>
+
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Wallet Previous Balance</p>
+                    <h5 class="font-weight-bolder">
+                      ${{ previous_balance }}
+                    </h5>
+                    <p class="mb-0">
+                      <!-- <span class="text-success text-sm font-weight-bolder">+5%</span> than last month -->
+                      View your previous balance.
+                      <!-- <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i> -->
+
+                    </p>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+
+
+        <!-- Wallet-->
+
+
+        <div class="container-fluid py-4">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header pb-0">
+                  <div class="d-flex align-items-center">
+                    <p class="mb-0 text-center">Eco-Donate Tree Donation Project</p>
+                
+                  </div>
+                  <div style="color:white" class="alert alert-secondary" role="alert">
+                    <strong>Dear Donor!</strong>Donating 1 USD will plant 1 tree, likewise 20 USD will plant 20 trees, 50 USD will plant 50 trees and so on!
+                  </div>
+                </div>
+                <div class="card-body">
+                  <!-- <p class="text-uppercase text-sm">Donation for the Tree Project</p> -->
+                <form action="/profile" method="POST">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="example-text-input" class="form-control-label">Amount to donate USD $</label>
+                        <!-- <input class="form-control" type="text" value="$10"> -->
+                        <select class="form-select" aria-label="Select option" name="amount">
+                          <option value="1">1</option>
+                          <option value="20">20 </option>
+                          <option value="50">50</option>
+                          <option value="100">100</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="example-text-input"  class="form-control-label">What type of tree would you like to Plant?</label>
+                        <!-- <input class="form-control" type="text" value="Mahogany"> -->
+                        <select class="form-select" aria-label="Select option" name="spieces">
+                          <option value="Aspen Trees">Aspen Trees</option>
+                          <option value="Evergreen Trees">Evergreen Trees</option>
+                          <option value="Oak Trees">Oak Trees</option>
+                          <option value="Mangrove Trees">Mangrove Trees</option>
+                          <option value="Willow Trees">Willow Trees</option>
+                          <option value="Redwood Trees">Redwood Trees</option>
+                          <option value="Pine Trees">Pine Trees</option>
+                          <option value="Indigenous Trees">Indigenous Trees</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="example-text-input"  class="form-control-label">Where do you want your seed Planted?</label>
+                        <!-- <input class="form-control" type="text" value="Sub Sahara Africa"> -->
+                        <select class="form-select" aria-label="Select option" name="region">
+                          <option value="Sub-Saharan Africa">Sub-Saharan Africa</option>
+                          <option value="South America - Amazon Basin">South America - Amazon Basin</option>
+                          <option value="Southeast Asia">Southeast Asia</option>
+                          <option value="South Asia - Indian Subcontinent">South Asia - Indian Subcontinent</option>
+                          <option value="Central Asia - Arid and Semi-arid Regions">Central Asia - Arid and Semi-arid Regions</option>
+                          <option value="Oceania - Pacific Islands">Oceania - Pacific Islands</option>
+                          <option value="Regions in Europe">Regions in Europe</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="example-text-input" class="form-control-label">Donation Purpose</label>
+                        <input class="form-control" type="text" value="Donating helps create a positive impact and make a difference in the lives of others." name="description">
+                      </div>
+                    </div>
+                  <div class="col-md-6">
+                    <div class="form-check">
+                      <!-- <input class="form-check-input" name="get_certified" type="checkbox" value="" id="fcustomCheck1" checked="">
+                      <label class="custom-control-label"  for="customCheck1">Would you like to receive a certificate of donation?</label> -->
+                    </div>
+                  </div>
+                  </div>
+                  <hr class="horizontal dark">
+                  <p class="text-uppercase text-sm">Contact Information</p>
+                  <div class="row">
+                    <!-- <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="example-text-input" class="form-control-label">Address</label>
+                        <input class="form-control" type="text" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
+                      </div>
+                    </div> -->
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="example-text-input"  class="form-control-label">Full Name</label>
+                        <input class="form-control" type="text" value="Enter Full Name" name="fullname">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="example-text-input" class="form-control-label">Address</label>
+                        <input class="form-control" type="text" value="Enter Your Address" name="address">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="example-text-input" class="form-control-label">Country</label>
+                        <input class="form-control" type="text" value="Enter your country" name="country">
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <hr class="horizontal dark">
+                  <p class="text-uppercase text-sm">About me</p> -->
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="example-text-input" class="form-control-label">About me</label>
+                        <input class="form-control" name="aboutme" type="text" value="My passion for preserving the planet drives me to take action against climate change.">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Plant Your Tree Now!</button>
+                    <p class="text-sm mt-3 mb-0">Want to explore other payment options? <a href="javascript:;" class="text-dark font-weight-bolder">Click here</a></p>
+                  </div>
+                  
+
+                </form>
+                </div>
+              </div>
+            </div>
+                  
+                    
+                 
+        
+
+        <!-- Profile -->
+        <div class="col-md-4">
+          <div class="card card-profile">
+            <img src="{{ url_for('static', filename='assets/img/trees/' + tree) }}" alt="Image placeholder" class="card-img-top">
+            <div class="row justify-content-center">
+              <div class="col-4 col-lg-4 order-lg-2">
+                <div class="mt-n4 mt-lg-n6 mb-4 mb-lg-0">
+                  <a href="javascript:;">
+                    <img src="{{ url_for('static', filename='assets/img/avatar1.jpg') }}" class="rounded-circle img-fluid border border-2 border-white">
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
+              <div class="d-flex justify-content-between">
+                <!-- <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-none d-lg-block">View Donation Info</a> -->
+                <!-- <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-block d-lg-none"><i class="ni ni-collection"></i></a>
+                <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">View Certificate</a>
+                <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none"><i class="ni ni-email-83"></i></a>
+              </div> -->
+            </div>
+            <div class="card-body pt-0">
+              <div class="text-center mt-4">
+                <div class="row">
+                  <h5><span class="font-weight-light">Username</span>: {{ user }} <span class="font-weight-light">, active</span></h5>
+
+                  <h6><span class="font-weight-light">Email</span>: {{email}}</h6>
+                  <h6><span class="font-weight-light">Wallet ID</span>: {{wallet_id}} </h6>
+                  <h6><span class="font-weight-light">Date Created</span>: {{created_date}}</h6>
+
+                  
+                </div>
+                
+              </div>
+
+              </div>
+              <br>
+              <a href="{{ url_for('main.transaction') }}" class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">View Donation Details</a>
+              <a href="{{ url_for('main.transaction') }}" class="btn btn-sm btn-dark mb-0 d-block d-lg-none"><i class="ni ni-collection"></i></a>
+
+            </div>
+          </div>
+        </div>
+        
+        <!-- carousel -->
+
+      
+        
+      </div>
+    </div>
+
+    </div>
+
+  {% endblock %}

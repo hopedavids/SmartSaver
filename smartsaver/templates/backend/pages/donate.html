@@ -1,0 +1,120 @@
+{% extends 'backend/backend_succor.html' %}
+
+
+{% block title %} Profile {% endblock %}
+
+
+  {% block content %}
+
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-header pb-0">
+              <div class="d-flex align-items-center">
+                <p class="mb-0">Eco-Donate Tree Donation Project</p>
+                <button class="btn btn-primary btn-sm ms-auto">Settings</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <p class="text-uppercase text-sm">Donation for the Tree Project</p>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Donation Amount</label>
+                    <input class="form-control" type="text" value="$10">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">What type of tree would you like to donate?</label>
+                    <input class="form-control" type="text" value="Mahogany">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Where do you want your seed Planted?</label>
+                    <input class="form-control" type="text" value="Sub Sahara Africa">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Donation Purpose</label>
+                    <input class="form-control" type="text" value="Lucky">
+                  </div>
+                </div>
+              <div class="col-md-6">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" checked="">
+                  <label class="custom-control-label" for="customCheck1">Would you like to receive a certificate of donation?</label>
+                </div>
+              </div>
+              </div>
+              <hr class="horizontal dark">
+              <p class="text-uppercase text-sm">Contact Information</p>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Address</label>
+                    <input class="form-control" type="text" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">City</label>
+                    <input class="form-control" type="text" value="New York">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Country</label>
+                    <input class="form-control" type="text" value="United States">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Postal code</label>
+                    <input class="form-control" type="text" value="437300">
+                  </div>
+                </div>
+              </div>
+              <hr class="horizontal dark">
+              <p class="text-uppercase text-sm">About me</p>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">About me</label>
+                    <input class="form-control" type="text" value="Dashboard for Bootstrap 5. It is Free and Open Source.">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mt-4">
+          <div class="card card-profile mt-md-0 mt-5">
+            <a href="javascript:;">
+              <div class="p-3">
+                <img class="w-100 border-radius-md" src="{{ url_for('static', filename='assets/img/faces/team-1.jpg') }}">
+              </div>
+            </a>
+            <div class="card-body blur justify-content-center text-center mx-4 mb-4 border-radius-md">
+              <!-- <h4 class="mb-0">Bruce Mars</h4>
+              <p>Atlanta, U.S.</p> -->
+              <div class="row justify-content-center text-center">
+                <div class="col-12 mx-auto">
+                  <h5 class="text-info mb-0">750</h5>
+                  <small>Projects</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+          
+        </div>
+      </div>
+    </div>
+
+
+  {% endblock %}

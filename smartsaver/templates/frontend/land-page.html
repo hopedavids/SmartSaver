@@ -1,0 +1,324 @@
+
+{% extends 'frontend/pages/base.html' %}
+
+{% block title %}EcoDonate{% endblock  %}
+
+{% block content %}
+  <!-- Navbar -->
+  <nav id="navbar-main" class="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light py-2">
+    <div class="container">
+
+     
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse" id="navbar_global">
+        <div class="navbar-collapse-header">
+          <div class="row">
+            <div class="col-6 collapse-brand">
+
+              <a href="#">
+                <img src="{{ url_for('static', filename='assets/img/brand/blue.png') }}">
+              </a>
+            </div>
+            <div class="col-6 collapse-close">
+              <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
+          <li class="nav-item dropdown">
+            <a href="" class="nav-link" data-toggle="dropdown" href="#" role="button">
+              <i class="ni ni-ui-04 d-lg-none"></i>
+              <span class="nav-link-inner--text"><strong>ECO-DONATE</strong></span>
+            </a>
+            
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <!-- <a href="#" class="nav-link" data-toggle="dropdown" href="#" role="button">
+              <i class="ni ni-collection d-lg-none"></i>
+
+              <span class="nav-link-inner--text">Home Page</span>
+            </a> -->
+            <div class="dropdown-menu">
+              <a href="{{ url_for('main.landing_page')}}" class="dropdown-item">Home</a>
+              <a href="#" class="dropdown-item">Profile</a>
+             
+              
+            </div>
+          </li>
+        </ul>
+        <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link" data-toggle="dropdown" href="#" role="button">
+              <i class="ni ni-ui-04 d-lg-none"></i>
+              <a href="{{ url_for('user_auth.signin') }}"><button type="button" class="btn btn-danger">SignIn</button></a>
+              <a href="{{ url_for('user_auth.signin') }}"><button type="button" class="btn btn-success">Register</button></a>
+
+            </a>
+            
+            </div>
+          </li>
+        <!-- <li class="nav-item dropdown">
+        <li class="nav-item">
+        <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+          <a href="{{ url_for('user_auth.signin') }}"><button type="button" class="btn btn-default">SignIn</button></a>
+        
+          <a href="{{ url_for('user_auth.signin') }}"><button type="button" class="btn btn-default">Register</button></a>
+
+        </ul> -->
+        <!-- <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+          <li class="nav-item">
+            <a class="btn btn-primary" href="{{ url_for('user_auth.signin') }}" target="_blank">
+              <span class="nav-link-inner--text">Login</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-primary" href="{{ url_for('user_auth.register') }}" target="_blank">
+              <span class="nav-link-inner--text">Sign-Up</span>
+            </a>
+          </li>
+        </ul> -->
+      </div>
+    </div>
+  </nav>
+  <!-- End Navbar -->
+  <div class="wrapper">
+    <div class="section section-hero section-shaped">
+      <!-- <div class="shape shape-style-3 shape" style="background-image: url('{{ url_for('static', filename='assets/img/trees/tree5.jpg') }}');> -->
+        <div class="shape shape-style-3 shape" style="background-image: url('{{ url_for('static', filename='assets/img/trees/tree5.jpg') }}'); background-size: cover; background-position: center;">
+        
+        <span class="trees-150"></span>
+        <!-- <span class="trees-50"></span>
+        <span class="trees-50"></span>
+        <span class="trees-75"></span>
+        <span class="trees-100"></span>
+        <span class="trees-75"></span>
+        <span class="trees-50"></span>
+        <span class="trees-100"></span>
+        <span class="trees-50"></span>
+
+        <span class="span-100"></span>  -->
+      </div>
+      <div class="page-header">
+        <div class="container shape-container d-flex align-items-center py-lg">
+          <div class="col px-0">
+            <div class="row align-items-center justify-content-center">
+              <div class="col-lg-6 text-center">
+
+                <h1 class="text-white display-1">More Trees!</h1>
+                <h2 class="display-4 font-weight-normal text-white">The time is right now!</h2>
+                <div class="btn-wrapper mt-4">
+
+                  <a href="{{ url_for('user_auth.signin') }}" class="btn btn-danger btn-icon mt-3 mb-sm-0">
+                    <button class="btn btn-success btn-icon">
+                    <!-- <span class="btn-inner--icon"><i class="ni ni-button-play"></i></span> -->
+                    <span class="btn-inner--text">Make your Donations Today!</span>
+                    </button></a>
+                  </a>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="separator separator-bottom separator-skew zindex-100">
+        <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <polygon class="fill-white" points="2560 0 2560 100 0 100"></polygon>
+        </svg>
+      </div>
+    </div>
+    <div class="section features-6">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6">
+            <div class="info info-horizontal info-hover-primary">
+              <div class="description pl-4">
+
+                <h5 class="title">Why Planting More Trees?</h5>
+                <p>Welcome to our tree planting donation platform, where together we can make a positive impact on the planet. Trees are not just silent spectators of our lives; they are guardians of the Earth, silently working to cleanse the air we breathe, provide habitat for countless species, and preserve the beauty of our natural landscapes.</p>
+                <!--<a href="#" class="text-info">Learn more</a>-->
+              </div>
+            </div>
+            <div class="info info-horizontal info-hover-primary mt-5">
+              <div class="description pl-4">
+
+                <h5 class="title">Your Donations Matter</h5>
+                <p>Through your generous contributions, we have the power to transform barren lands into lush forests, restore delicate ecosystems, and combat the challenges of deforestation and climate change. Together, we can create a legacy of sustainability, where the harmony between humans and nature flourishes.</p>
+                <p>Your donation, no matter how small, has the power to make a significant difference. With each dollar contributed, we can plant and care for a new tree, giving it the opportunity to flourish and contribute to a healthier ecosystem.</p>
+                <a href="#" class="text-info"></a>
+              </div>
+            </div>
+            <div class="info info-horizontal info-hover-primary mt-5">
+              <div class="description pl-4">
+
+                <h5 class="title">Our Mission is to Combat Climate Change</h5>
+                <p>Let us stand united in our commitment to environmental stewardship. Together, let's leave a greener footprint on this planet, knowing that we have done our part to protect and preserve the natural wonders that surround us.Thank you for joining us on this journey of tree planting and environmental conservation. Together, we can create a brighter, greener, and more sustainable future for all</p>
+                <a href="#" class="text-info"></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-10 mx-md-auto">
+
+            <img class="ml-lg-5" src="{{ url_for('static', filename='assets/img/ill/2.jpg') }}" width="100%">
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="section features-1">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 mx-auto text-center">
+            <span class="badge badge-primary badge-pill mb-3"> Mitigate climate change</span>
+
+            <h3 class="display-3">Combating climate change</h3>
+            <p class="lead">Let us stand united in our commitment to environmental stewardship and save planet Earth.</p>
+          <div class="btn-wrapper mt-4">
+          <iframe width="660" height="315" src="https://www.youtube.com/embed/qySBQjSXbfw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display:block; margin:auto;">
+          </iframe>
+        </div>
+      </div>
+      </div>
+      </div>
+    </div>
+    <div class="section features-1">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 mx-auto text-center">
+            <span class="badge badge-primary badge-pill mb-3">Our Developers</span>
+
+            <h3 class="display-3">Meet Our Developers</h3>
+            <p class="lead">Thinking out of the Box to bring out this brilliant Idea to avoid global worming</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="info">
+
+              <img src="{{ url_for('static', filename='assets/img/faces/hope.jpeg') }}" alt="Circle image" class="img-fluid rounded-circle shadow" style="width: 150px;">
+            
+              <h6 class="info-title text-uppercase text-primary">Hope Lekan Davids<h6>
+              <p class="description opacity-8">Platform Engineer<br> Get In Tourch With Us Below</p>
+              <div class="col-lg-6 text-lg-center btn-wrapper">
+                <button target="_blank" href="https://twitter.com/creativetim" rel="nofollow" class="btn btn-icon-only btn-twitter rounded-circle" data-toggle="tooltip" data-original-title="Follow us">
+                  <span class="btn-inner--icon"><i class="fa fa-twitter"></i></span>
+                </button>
+                <button target="blank"  href="https://github.com/hopedavids/" rel="nofollow" class="btn btn-icon-only btn-github rounded-circle" data-toggle="tooltip" data-original-title="Star on Github">
+                  <a href="https://github.com/hopedavids">
+                  <span class="btn-inner--icon"><i class="fa fa-github"></i></span>
+                  </a>
+                </button>
+                <button target="_blank" ="https://www.facebook.com/CreativeTim/" rel="nofollow" class="btn-icon-only rounded-circle btn btn-facebook" data-toggle="tooltip" data-original-title="Like us">
+                  <a href="https://www.linkedin.com/in/hope-davids-1aa004130/">
+                  <span class="btn-inner--icon"><i class="fa fa-linkedin" aria-hidden="true"></i></span>
+                  </a>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="info">
+
+              <img src="{{ url_for('static', filename='assets/img/faces/bernard.jpeg') }}" alt="Circle image" class="img-fluid rounded-circle shadow" style="width: 150px;">
+              <h6 class="info-title text-uppercase text-success">Benard Boateng Sakyi</h6>
+              <p class="description opacity-8">FullStack Software Engineer.<br> Get In Touch With Us Below</p>
+              <div class="col-lg-6 text-lg-center btn-wrapper">
+                <button target="_blank" href="https://twitter.com/creativetim" rel="nofollow" class="btn btn-icon-only btn-twitter rounded-circle" data-toggle="tooltip" data-original-title="Follow us">
+                  <span class="btn-inner--icon"><i class="fa fa-twitter"></i></span>
+                </button>
+          
+                <button target="_blank" href="https://github.com/creativetimofficial" rel="nofollow" class="btn btn-icon-only btn-github rounded-circle" data-toggle="tooltip" data-original-title="Star on Github">
+                  <a href="https://github.com/bernardsakyi/">
+                  <span class="btn-inner--icon"><i class="fa fa-github"></i></span>
+                  </a>
+                </button>
+                
+                <button target="_blank" ="https://www.facebook.com/CreativeTim/" rel="nofollow" class="btn-icon-only rounded-circle btn btn-facebook" data-toggle="tooltip" data-original-title="Like us">
+                  <a href="https://www.linkedin.com/in/bernard-sakyi-17159420a/">
+                  <span class="btn-inner--icon"><i class="fab fa-linkedin"></i></span>
+                  </a>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="info">
+
+              <img src="{{ url_for('static', filename='assets/img/faces/kolade.jpeg') }}" alt="Circle image" class="img-fluid rounded-circle shadow" style="width: 150px;">
+              <h6 class="info-title text-uppercase text-warning">Emmanuel K. Davids</h6>
+              <p class="description opacity-8">FullStack Software Engineer.<br> Get In Touch With Us Below</p>
+              <div class="col-lg-6 text-lg-center btn-wrapper">
+                <button target="_blank" href="https://twitter.com/creativetim" rel="nofollow" class="btn btn-icon-only btn-twitter rounded-circle" data-toggle="tooltip" data-original-title="Follow us">
+                  <span class="btn-inner--icon"><i class="fa fa-twitter"></i></span>
+                </button>
+                
+                <button target="_blank" href="https://github.com/creativetimofficial" rel="nofollow" class="btn btn-icon-only btn-github rounded-circle" data-toggle="tooltip" data-original-title="Star on Github">
+                  <a href="https://github.com/emmanueldavids/">
+                  <span class="btn-inner--icon"><i class="fa fa-github"></i></span>
+                  </a>
+                </button>
+                <button target="_blank" ="https://www.linkedin.com/in/emmanuel-kolade-davids-097822221/" rel="nofollow" class="btn-icon-only rounded-circle btn btn-facebook" data-toggle="tooltip" data-original-title="Like us">
+                  <a href="https://www.linkedin.com/in/emmanuel-kolade-davids-097822221/">
+                  <span class="btn-inner--icon"><i class="fab fa-linkedin"></i></span>
+                  </a>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br /><br />
+    <footer class="footer">
+      <div class="container">
+        <div class="row row-grid align-items-center mb-5">
+          <div class="col-lg-6">
+            <h3 class="text-primary font-weight-light mb-2">Lets Plant more trees!</h3>
+            <h4 class="mb-0 font-weight-light">Your donations can save the planet earth from global warming.</h4>
+          </div>
+          <div class="col-lg-6 text-lg-center btn-wrapper">
+            <button target="_blank" href="https://twitter.com/creativetim" rel="nofollow" class="btn btn-icon-only btn-twitter rounded-circle" data-toggle="tooltip" data-original-title="Follow us">
+              <span class="btn-inner--icon"><i class="fa fa-twitter"></i></span>
+            </button>
+            <!-- <button target="_blank" href="https://www.facebook.com/CreativeTim/" rel="nofollow" class="btn-icon-only rounded-circle btn btn-facebook" data-toggle="tooltip" data-original-title="Like us">
+              <span class="btn-inner--icon"><i class="fab fa-facebook"></i></span> -->
+            </button>
+            <!-- <button target="_blank" href="https://dribbble.com/creativetim" rel="nofollow" class="btn btn-icon-only btn-dribbble rounded-circle" data-toggle="tooltip" data-original-title="Follow us">
+              <span class="btn-inner--icon"><i class="fa fa-dribbble"></i></span> -->
+            </button>
+            <button target="_blank" href="https://github.com/creativetimofficial" rel="nofollow" class="btn btn-icon-only btn-github rounded-circle" data-toggle="tooltip" data-original-title="Star on Github">
+              <span class="btn-inner--icon"><i class="fa fa-github"></i></span>
+            </button>
+          </div>
+        </div>
+        <hr>
+        <div class="row align-items-center justify-content-md-between">
+          <div class="col-md-6">
+            <div class="copyright">
+              &copy; 2023 <a href="" target="_blank">Eco-Donate Developers</a>.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <ul class="nav nav-footer justify-content-end">
+
+             
+              <li class="nav-item">
+                <a href="{{ url_for('main.landing_page')}}" class="nav-link" target="_blank">Home</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link" target="_blank">Profile</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+{% endblock %}

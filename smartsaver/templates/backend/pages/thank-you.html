@@ -1,0 +1,49 @@
+{% extends 'backend/backend_succor.html' %}
+
+{% block title %} Thank You {% endblock %}
+
+{% block user %} {{user}} {% endblock %}
+
+{% block content %}
+  
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div style="color: white;" class="alert alert-{{ category }}" role="alert">
+      <strong>Heya {{ user }}: </strong> {{ message }} !</span>
+    </div>
+  {% endfor %}
+  {% endwith %}
+
+<div class="card card-frame">
+  <div class="card-body">
+    <h3 style="text-align:center">Thank You for Your Donation!</h3>
+    <p style="text-align:center">Your donation will help us plant thousands of trees, which will help to improve the environment and combat climate change.</p>
+    <p style="text-align:center">We would like to express our heartfelt gratitude for your generous contribution towards our tree planting initiative.</p>
+    <p style="text-align:center">Your support plays a vital role in promoting a greener environment and combating climate change</p>
+    <br>
+    <br>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/yXIS-c9HsXc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display:block; margin:auto;">
+    </iframe>
+    <br>
+    <p style="text-align:center">Thank you again for your support. We could not do this without you.</p>
+
+    <br>
+    <br>
+  
+  <div align="center">
+      <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        Whats Next?
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" href="{{ url_for('main.transaction') }}">View donation logs</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('main.view_certificate') }}">View certificate</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('main.email_certificate') }}">Email me my certificate</a></li>
+      </ul>
+  </div>
+  </div>
+</div>
+<br>
+
+
+{% endblock %}
