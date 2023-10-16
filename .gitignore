@@ -1,0 +1,11 @@
+iso_env
+tests
+donate/.env
+donate/.flaskenv
+donate/certify
+donate/flask_session
+.vscode
+
+donate/__pycache__/
+donate/migrations/__pycache__/
+donate/migrations/versions/__pycache__/
