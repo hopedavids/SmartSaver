@@ -96,7 +96,7 @@ contact_update_model = api.model(
     }
 )
 
-donation_model = api.model(
+transfer_model = api.model(
     "Donation", {
         "donation_id": fields.Integer,
         "user": fields.Nested(user_model),
@@ -110,7 +110,7 @@ donation_model = api.model(
     }
 )
 
-donation_update_model = api.model(
+transfer_update_model = api.model(
     "Donation", {
         "userid": fields.Integer(required=True),
         "amount": fields.Integer(required=True),
