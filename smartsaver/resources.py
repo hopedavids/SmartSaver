@@ -10,9 +10,9 @@ from flask_restx import Resource, Namespace
 from flask_jwt_extended import jwt_required, create_access_token
 from werkzeug.security import generate_password_hash, check_password_hash
 from instances import db, login_manager, csrf, api
-from api_models import authorizations, user_model, user_creation_model, user_login_model, wallet_model, wallet_create_model, payment_model, contact_model, contact_update_model, donation_model, donation_update_model
+from api_models import authorizations, user_model, user_creation_model, user_login_model, wallet_model, wallet_create_model, payment_model, contact_model, contact_update_model, money transfer_model, money transfer_update_model
 from api_auth import login
-from models import User, Wallet, Payment, Contact, Donation
+from models import User, Wallet, Payment, Contact, Transfer_Money
 
 
 """In this module, namespaces are defined and including the routes and views
@@ -28,7 +28,7 @@ user_ns = Namespace('user', description="All user operations.", authorizations=a
 wallet_ns = Namespace('wallet', description="Wallet information", authorizations=authorizations)
 pay_ns = Namespace('payment', description="All payments operations", authorizations=authorizations)
 contact_ns = Namespace('contact', description="All Contact informations", authorizations=authorizations)
-donation_ns = Namespace('donation', description="Donations operation", authorizations=authorizations)
+transfer_ns = Namespace('money transfer', description="money transfers operation", authorizations=authorizations)
 # api_ns = Namespace('api', description='API namespace')
 
 
@@ -435,11 +435,6 @@ class Wallet_Details(Resource):
             }, 400
 
 
-
-
-    
-
-
 @pay_ns.route('')
 class Payment_Info(Resource):
     """This object defines the routes and views for Payment and
@@ -514,19 +509,19 @@ class Contact_Details(Resource):
             fullname = api.payload['fullname']
             address = api.payload['address']
             country = api.payload['country']
-            aboutme = api.payload['aboutme']
+            description = api.payload['description']
 
             # check to know if the contact details exists
             contact = Contact.query.filter_by(full_name=fullname).first()
 
-            if not fullname and  not address and not country and not aboutme:
+            if not fullname and  not address and not country and not description:
                     return ({
                         "data": "null",
                         "message": "Invalid fields or payload format",
                         "status": "api-error"
                         }), 400
             
-            if not str(fullname, address, country, aboutme):
+            if not str(fullname, address, country, description):
                 return ({
                         "data": "null",
                         "message": "fields must only contain strings",
@@ -534,7 +529,7 @@ class Contact_Details(Resource):
                         }), 400
             
             # create a new instance of the contact object
-            contact = Contact(full_name=fullname, address=address, country=country, about_me=about_me)
+            contact = Contact(full_name=fullname, address=address, country=country, description=description)
             
             # save and commit the new instance to database
             db.session.add(contact)
@@ -601,7 +596,7 @@ class Contact_Details(Resource):
             
             contact = Contact.query.filter_by(contact_id=contact).first()
 
-            if not ('fullname' in payload or 'address' in payload or 'country' in payload or 'aboutme' in payload):
+            if not ('fullname' in payload or 'address' in payload or 'country' in payload or 'description' in payload):
                 return ({
                     "data": "null",
                     "message": "sorry, the field is not valid",
@@ -681,23 +676,23 @@ class Contact_Details(Resource):
 
 
 
-@donation_ns.route('')
-class Donations(Resource):
-    """This object defines the routes and views for Donations and
+@transfer_ns.route('')
+class Money_Transfer(Resource):
+    """This object defines the routes and views for money transfers and
         handles the defined resources.
     """
 
-    @donation_ns.doc(security="basicAuth")
-    @donation_ns.marshal_list_with(donation_model)
+    @transfer_ns.doc(security="basicAuth")
+    @transfer_ns.marshal_list_with(money transfer_model)
     @jwt_required()
     def get(self):
         """This method handles the HTTP GET method and provides the
-            platform to retrieve donations.
+            platform to retrieve money transfers.
         """
         try:
-            donation = Donation.query.all()
+            transfer = Transfer_Money.query.all()
 
-            return donation
+            return transfer
 
         except Exception as e:
              return {
@@ -707,11 +702,11 @@ class Donations(Resource):
                 }, 400
     
     
-    @donation_ns.doc(security="basicAuth")
-    @donation_ns.expect(donation_model)
+    @transfer_ns.doc(security="basicAuth")
+    @transfer_ns.expect(money transfer_model)
     @jwt_required()
     def post(self):
-        """ This method handles HTTP POST Request to the Donation Object"""
+        """ This method handles HTTP POST Request to the money transfer Object"""
 
         try:
             payload = request.get_json()
@@ -770,7 +765,7 @@ class Donations(Resource):
             db.session.commit()
 
             return ({
-                "message": "donations was successful",
+                "message": "money transfers was successful",
                 "status": "created successfully"
             }), 200
 
@@ -782,18 +777,18 @@ class Donations(Resource):
                 }, 400
     
 
-@donation_ns.route('/<int:transfer_id>')
+@transfer_ns.route('/<int:transfer_id>')
 class Transfer_Money(Resource):
-    """This is an extension of the donations that handles specific
-        donations and HTTP methods.
+    """This is an extension of the money transfers that handles specific
+        money transfers and HTTP methods.
     """
 
-    @donation_ns.doc(security="basicAuth")
-    @donation_ns.marshal_list_with(donation_model)
+    @transfer_ns.doc(security="basicAuth")
+    @transfer_ns.marshal_list_with(transfer_model)
     @jwt_required()
     def get(self, transfer_id):
         """ This method handles the specific HTTP GET method and 
-            returns specific donations.
+            returns specific money transfers.
         """
 
         try:
@@ -804,7 +799,7 @@ class Transfer_Money(Resource):
             if not transfer:
                 return {
                         'data': 'null',
-                        'message': 'donation details could not be fetched',
+                        'message': 'transfer details could not be fetched',
                         'status': 'api-error'
                     }, 400
 
@@ -816,11 +811,11 @@ class Transfer_Money(Resource):
                 }, 400
 
 
-    @donation_ns.doc(security="basicAuth")
-    @donation_ns.expect(donation_update_model, validate=True)
+    @transfer_ns.doc(security="basicAuth")
+    @transfer_ns.expect(transfer_update_model, validate=True)
     @jwt_required()
     def put(self, transfer_id):
-        """ This method handles the PUT request for the Donation
+        """ This method handles the PUT request for the money transfer
             object.
         """
         try:
@@ -889,10 +884,10 @@ class Transfer_Money(Resource):
                 }, 400
     
 
-    @donation_ns.doc(security="basicAuth")
+    @transfer_ns.doc(security="basicAuth")
     @jwt_required()
     def delete(self, transfer_id):
-        """ This method handles the DELETE request for the donation
+        """ This method handles the DELETE request for the money transfer
             object.
         """
         
