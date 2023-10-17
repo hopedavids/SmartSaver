@@ -15,7 +15,7 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(ROOT_DIR)
 
 from instances import db, mail, csrf
-from models import Wallet, Donation, Contact, Payment
+from models import Wallet, Transfer_Money, Contact, Payment
 
 
 main = Blueprint('main', __name__)
@@ -24,7 +24,7 @@ main = Blueprint('main', __name__)
 load_dotenv('.env')
 
 
-@main.route('/eco-donate')
+@main.route('/smart-saver')
 def landing_page():
     return render_template('frontend/land-page.html')
 
@@ -63,9 +63,9 @@ def index():
     try:
         if request.method == 'POST':
             amount = request.form['amount']
-            region = request.form['region']
-            tree_spieces = request.form['spieces']
-            description = request.form['description']
+            walletID = request.form['walletID']
+            recipientemail = request.form['recipientemail']
+            recipientfullname = request.form['recipientfullnamel']
             get_certified = request.form.get('get_certified', False)
 
             number_of_trees = amount
@@ -75,17 +75,17 @@ def index():
             fullname = request.form['fullname']
             address = request.form['address']
             country = request.form['country']
-            about_me = request.form['aboutme']
+            description = request.form['description']
         
-            if any(len(text) < minimum_length for text in ([description, about_me])):
+            if any(len(text) < minimum_length for text in ([description])):
                 flash("description should be more than 20 words", 'danger')
                 return redirect(url_for("main.index"))
 
-            if (not fullname or not address or not country or not about_me or not description):
+            if (not fullname or not address or not country or not walletID or not recipientemail or not recipientfullname or not description):
                 flash('kindly fill all fields correctly', 'danger')
                 return redirect(url_for("main.index"))
             
-            if any(text.isupper() for text in [fullname,country, address, about_me, description]):
+            if any(text.isupper() for text in [fullname,country, address, recipientemail, description]):
                 flash("kindly use alphanumeric or lowercase", 'danger')
                 return redirect(url_for("main.index"))
 
@@ -93,44 +93,43 @@ def index():
             if amount:
                 # check if amount is matches or less than the wallet balance
                 if float(amount) > current_balance:
-                    flash("Dear Donor, you have insufficient Fund in your account", 'warning')
+                    flash("Dear Sender, you have insufficient Fund in your account", 'warning')
                     return redirect(url_for("main.index"))
                 
             # make the donotion happen
             current_balance -= int(amount)
             wallet.current_balance = current_balance
 
-            donation = Donation(
+            transfer = Transfer_Money(
                             user_id=user_id, 
                             amount=amount,
-                            region_to_plant=region,
-                            tree_spieces=tree_spieces,
-                            number_of_trees=number_of_trees,
-                            description=description
+                            walletID=walletID,
+                            recipientfullname=recipientfullname,
+                            recipientemail=recipientemail
                             )
 
             contact = Contact(
                             user_id=user_id,
-                            full_name=fullname,
+                            fullname=fullname,
                             address=address,
                             country=country,
-                            about_me=about_me
+                            description=description
                             )
 
-            db.session.add_all([wallet, donation, contact])
+            db.session.add_all([wallet, transfer, contact])
             db.session.commit()
 
             # query the donation object to retrieve the id
-            donation = Donation.query.filter_by(user_id=user_id).first()
+            transfer = Transfer_Money.query.filter_by(user_id=user_id).first()
 
-            donate_wallet = os.environ.get('DONATE_WALLET')
+            # donate_wallet = os.environ.get('DONATE_WALLET')
             payment = Payment(
-                        wallet_id=donate_wallet, 
-                        amount=amount, 
-                        donation_id=donation.donation_id
+                        wallet_id=walletID,
+                        amount=amount,
+                        transfer_id=transfer.transfer_id
                         )
 
-            wallet=Wallet.query.filter_by(wallet_id=donate_wallet).first()
+            wallet=Wallet.query.filter_by(wallet_id=walletID).first()
             wallet.current_balance = amount
 
             db.session.add_all([payment, wallet])
@@ -138,7 +137,7 @@ def index():
 
             
 
-            flash("Congratulations! Your tree planting donations was successful!!", 'success')
+            flash("Congratulations! Your money transfers was successful!!", 'success')
 
             return redirect(url_for('main.gratitude'))
 
@@ -171,13 +170,13 @@ def transaction():
     user_id = current_user.id
     user = current_user.username
     contacts = Contact.query.filter_by(user_id=user_id).order_by(Contact.contact_id.desc()).paginate(page=page, per_page=2)
-    donations = Donation.query.filter_by(user_id=user_id).order_by(Donation.donation_id.desc()).paginate(page=page, per_page=2)
+    transfers = Transfer_Money.query.filter_by(user_id=user_id).order_by(Transfer_Money.transfer_id.desc()).paginate(page=page, per_page=2)
     
-    offset_donations = Donation.query.filter_by(user_id=user_id).order_by(Donation.donation_id.desc()).all()
+    offset_transfer = Transfer_Money.query.filter_by(user_id=user_id).order_by(Transfer_Money.transfer_id.desc()).all()
     wallets = Wallet.query.filter_by(user_id=user_id).all()
     
-    transaction = zip(wallets, offset_donations)
-    data = zip(donations, contacts)
+    transaction = zip(wallets, offset_transfer)
+    data = zip(transfers, contacts)
 
     return render_template('backend/pages/tables.html', data=data, transactions=transaction, user=user)
 
@@ -198,17 +197,16 @@ def view_certificate():
     user_id = current_user.id
 
     contact = Contact.query.filter_by(user_id=user_id).order_by(Contact.contact_id.desc()).first()
-    donation = Donation.query.filter_by(user_id=user_id).order_by(Donation.donation_id.desc()).first()
+    transfer = Transfer_Money.query.filter_by(user_id=user_id).order_by(Transfer_Money.transfer_id.desc()).first()
 
     # Obtain data for the certificate (e.g., recipient's name, donation amount)
-    recipient_name = contact.full_name
+    sender_name = contact.full_name
     country = contact.country
-    donation_amount = '$'+ str(donation.amount)
-    region_to_plant = 'in ' + donation.region_to_plant
-    certify_date = 'Date: ' + datetime.now().strftime("%B %d, %Y")
+    savings = 'GHC '+ str(transfer.amount)
+    certify_date = 'Certify Date: ' + datetime.now().strftime("%B %d, %Y")
 
     # Generate the certificate content
-    generate_certificate_content(recipient_name, country, donation_amount, region_to_plant, certify_date)
+    generate_certificate_content(sender_name, country, savings, certify_date)
 
     # get the file path
     filepath = 'certify/certificate.pdf'
@@ -225,18 +223,17 @@ def email_certificate():
         user_id = current_user.id
         email = current_user.email
         contact = Contact.query.filter_by(user_id=user_id).order_by(Contact.contact_id.desc()).first()
-        donation = Donation.query.filter_by(user_id=user_id).order_by(Donation.donation_id.desc()).first()
+        transfer = Transfer_Money.query.filter_by(user_id=user_id).order_by(Transfer_Money.transfer_id.desc()).first()
 
 
         # Obtain data for the certificate (e.g., recipient's name, donation amount)
-        recipient_name = contact.full_name
+        sender_name = contact.full_name
         country = contact.country
-        donation_amount = '$'+ str(donation.amount)
-        region_to_plant = 'in ' + donation.region_to_plant
-        certify_date = 'Date: ' + datetime.now().strftime("%B %d, %Y")
+        savings = 'GHC '+ str(transfer.amount)
+        certify_date = 'Certify Date: ' + datetime.now().strftime("%B %d, %Y")
 
         # Generate the certificate content
-        pdf_buffer = generate_certificate_content(recipient_name, country, donation_amount, region_to_plant, certify_date)
+        pdf_buffer = generate_certificate_content(sender_name, country, savings, certify_date)
 
         # get the file path
         filepath = 'certify/certificate.pdf'
@@ -259,12 +256,12 @@ def send_certificate(email, filepath):
     with open(filepath, 'rb') as file:
         pdf_content = file.read()
 
-    message = Message("Certificate of Donation", sender=os.environ.get('MAIL_SENDER'), recipients=[email])
+    message = Message("Smart-Saver Issued Certificate", sender=os.environ.get('MAIL_SENDER'), recipients=[email])
     message.attach("certificate.pdf", "application/pdf", pdf_content)
     mail.send(message)
 
 
-def generate_certificate_content(recipient_name, country, donation_amount, region_to_plant, certify_date):
+def generate_certificate_content(sender_name, country, savings, certify_date):
     pdf_buffer = BytesIO()
 
     # Create a new PDF file
@@ -273,9 +270,9 @@ def generate_certificate_content(recipient_name, country, donation_amount, regio
 
     # Set up the certificate layout
     pdf.setFont("Helvetica-Bold", 24)
-    pdf.drawCentredString(letter[0] / 2, 8 * inch, "ECO-DONATE")
+    pdf.drawCentredString(letter[0] / 2, 8 * inch, "SMART-SAVER")
 
-    pdf.drawCentredString(letter[0] / 2, 7 * inch, "Certificate of Donation")
+    pdf.drawCentredString(letter[0] / 2, 7 * inch, "Smart-Saver Issued Certificate")
 
     # Add nice designs to the edges of the sheet
     pdf.setStrokeColorRGB(0.2, 0.5, 0.7)
@@ -287,13 +284,12 @@ def generate_certificate_content(recipient_name, country, donation_amount, regio
 
     pdf.setFont("Helvetica", 14)
     pdf.drawCentredString(letter[0] / 2, 6 * inch, "This is to certify that")
-    pdf.drawCentredString(letter[0] / 2, 5.5 * inch, recipient_name)
+    pdf.drawCentredString(letter[0] / 2, 5.5 * inch, sender_name)
     pdf.drawCentredString(letter[0] / 2, 5 * inch, country)
 
-    pdf.drawCentredString(letter[0] / 2, 4 * inch, "has generously donated")
-    pdf.drawCentredString(letter[0] / 2, 3.5 * inch, donation_amount)
-    pdf.drawCentredString(letter[0] / 2, 2.8 * inch, "towards the cause of planting trees and combating climate change")
-    pdf.drawCentredString(letter[0] / 2, 2.5 * inch, region_to_plant)
+    pdf.drawCentredString(letter[0] / 2, 4 * inch, "has open a Savings Account on the Smart-Saver Platform")
+    pdf.drawCentredString(letter[0] / 2, 2.8 * inch, "with an amount of")
+    pdf.drawCentredString(letter[0] / 2, 3.5 * inch, savings)
 
     pdf.setFont("Helvetica-Oblique", 12)
     pdf.drawCentredString(letter[0] / 2, 1.5 * inch, certify_date)
