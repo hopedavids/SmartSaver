@@ -6,7 +6,7 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(ROOT_DIR)
 
 from flask import Blueprint, render_template
-from models import User, Wallet, Payment, Contact, Donation
+from models import User, Wallet, Payment, Contact, Transfer_Money
 
 
 admin = Blueprint('admin', __name__)
@@ -37,8 +37,8 @@ def payment_management():
     payment = Payment.query.all()
     return render_template('admin/user_payment.html', payments=payment)
 
-@admin.route('/webmaster/donations-management')
+@admin.route('/webmaster/transfer-management')
 def donation_management():
-    donation = Donation.query.all()
+    transfer = Transfer_Money.query.all()
 
     return render_template('admin/user_donations.html', donations=donation)
