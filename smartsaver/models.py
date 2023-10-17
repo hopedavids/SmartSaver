@@ -119,10 +119,10 @@ class Contact(db.Model):
 
     contact_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id',  ondelete='CASCADE'), nullable=False)
-    full_name = db.Column(db.String(100), nullable=False)
+    fullname = db.Column(db.String(100), nullable=False)
     address = db.Column(db.String(150), nullable=False)
     country = db.Column(db.String(50), nullable=False)
-    about_me = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.String(255), nullable=False)
 
     user = db.relationship('User', backref='contact', uselist=False)
 
@@ -132,27 +132,25 @@ class Contact(db.Model):
 
 
 
-class Donation(db.Model):
+class Transfer_Money(db.Model):
     """This object defines the data model and schemas
         for donations.
     """
 
-    __tablename__ = 'donations'
+    __tablename__ = 'transfer'
     __table_args__ = {'extend_existing': True}
 
 
-    donation_id = db.Column(db.Integer, primary_key=True)
+    transfer_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id',  ondelete='CASCADE'), nullable=False)
+    walletID = db.Column(db.String(100), nullable=False)
     amount = db.Column(db.Float, default=0.00)
-    tree_spieces = db.Column(db.String(100), nullable=False)
-    number_of_trees = db.Column(db.Integer, nullable=False)
-    region_to_plant = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(255), nullable=False)
+    recipientemail = db.Column(db.String(255), nullable=False)
+    recipientfullname = db.Column(db.String(255), nullable=False)
     get_certified = db.Column(Boolean, default=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     user = db.relationship('User', backref='donations', uselist=False)
-   
 
 
 # This is method automatically updates the previous balance value

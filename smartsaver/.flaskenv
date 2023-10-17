@@ -1,4 +1,4 @@
-FLASK_APP=donate_app.py
+FLASK_APP=smartsaver_app.py
 
 FLASK_DEBUG=TRUE
 

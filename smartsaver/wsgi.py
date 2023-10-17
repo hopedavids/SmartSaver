@@ -5,7 +5,7 @@ import os
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(ROOT_DIR)
 
-from donate_app import create_app
+from smartsaver_app import create_app
 
 
 app = create_app()

@@ -726,21 +726,24 @@ class Donations(Resource):
             
 
             # Extract the data from the payload using marshal
+            recipientfullname = api.payload['recipientfullname']
             amount = api.payload['amount']
             user_id = api.payload['userid']
-            tree_spieces = api.payload['tree_spieces']
-            number_of_trees = api.payload['number_of_trees']
-            region_to_plant = api.payload['region_to_plant']
+            walletID = api.payload['walletID']
+            recipientemail = api.payload['recipientemail']
+            fullname = api.payload['fullname']
+            address = api.payload['address']
+            country = api.payload['country']
             description = api.payload['description']
 
-            if not amount and  not tree_spieces and not number_of_trees and not region_to_plant and not description:
+            if not amount and  not walletID and not recipientfullname and not recipientemail and not fullname and not description:
                     return ({
                         "data": "null",
                         "message": "Invalid fields or payload format",
                         "status": "api-error"
                         }), 400
             
-            if not str(tree_spieces, number_of_trees, region_to_plant, description):
+            if not str(recipientemail, recipientfullname, walletID, fullname, country, description):
                 return ({
                         "data": "null",
                         "message": "fields must only contain strings",
@@ -754,17 +757,16 @@ class Donations(Resource):
                         "status": "api-error"
                         }), 400
 
-            donation = Donation(
+            transfer = Transfer_Money(
                         amount=amount,
                         user_id=user_id,
-                        tree_spieces=tree_spieces, 
-                        number_of_trees=number_of_trees,
-                        region_to_plant=region_to_plant,
-                        description=description                        
+                        walletID=walletID, 
+                        recipientemail=recipientemail,
+                        recipientfullname=recipientfullname
                         )
 
             # save and commit changes
-            db.session.add(donation)
+            db.session.add(transfer)
             db.session.commit()
 
             return ({
@@ -780,8 +782,8 @@ class Donations(Resource):
                 }, 400
     
 
-@donation_ns.route('/<int:donation_id>')
-class Donations(Resource):
+@donation_ns.route('/<int:transfer_id>')
+class Transfer_Money(Resource):
     """This is an extension of the donations that handles specific
         donations and HTTP methods.
     """
@@ -789,17 +791,17 @@ class Donations(Resource):
     @donation_ns.doc(security="basicAuth")
     @donation_ns.marshal_list_with(donation_model)
     @jwt_required()
-    def get(self, donation_id):
+    def get(self, transfer_id):
         """ This method handles the specific HTTP GET method and 
             returns specific donations.
         """
 
         try:
-            donation = Donation.query.filter_by(donation_id=donation_id).first()
+            transfer = Transfer_Money.query.filter_by(transfer_id=transfer_id).first()
 
-            return donation, 200
+            return transfer, 200
 
-            if not donation:
+            if not transfer:
                 return {
                         'data': 'null',
                         'message': 'donation details could not be fetched',
@@ -817,7 +819,7 @@ class Donations(Resource):
     @donation_ns.doc(security="basicAuth")
     @donation_ns.expect(donation_update_model, validate=True)
     @jwt_required()
-    def put(self, donation_id):
+    def put(self, transfer_id):
         """ This method handles the PUT request for the Donation
             object.
         """
@@ -831,9 +833,9 @@ class Donations(Resource):
                     "status": "api-error"
                     }), 400
             
-            donation = Donation.query.filter_by(donation_id=donation_id).first()
+            transfer = Transfer_Money.query.filter_by(transfer_id=transfer_id).first()
 
-            if not ('userid' in payload or 'amount' in payload or 'tree_spieces' in payload or 'number_of_trees' in payload or 'region_to_plant' in payload or 'description' in payload):
+            if not ('userid' in payload or 'amount' in payload or 'walletID' in payload or 'recipientemail' in payload or 'recipientfullname' in payload):
                 return ({
                     "data": "null",
                     "message": "sorry, the field is not valid",
@@ -841,14 +843,14 @@ class Donations(Resource):
                     }), 400
 
 
-            if not all(isinstance(payload.get(field), str) for field in ['tree_spieces', 'region_to_plant', 'description']):
+            if not all(isinstance(payload.get(field), str) for field in ['recipientemail', 'recipientfullname', 'walletID']):
                 return {
                     "data": "null",
                     "message": "Fields must only contain strings",
                     "status": "api-error"
                 }, 400
 
-            if not all(isinstance(payload.get(field), int) for field in ['amount', 'number_of_trees', 'userid']):
+            if not all(isinstance(payload.get(field), int) for field in ['amount', 'userid']):
                 return {
                     "data": "null",
                     "message": "Fields must only contain integers",
@@ -856,28 +858,25 @@ class Donations(Resource):
                 }, 400
 
             if 'userid' in payload:
-                donation.user_id = payload['userid']
+                transfer.user_id = payload['userid']
             
             if 'amount' in payload:
-                donation.amount = payload['amount']
+                transfer.amount = payload['amount']
 
-            if 'tree_spieces' in payload:
-                donation.tree_spieces = payload['tree_spieces']
+            if 'recipientemail' in payload:
+                transfer.recipientemail = payload['recipientemail']
             
-            if 'number_of_trees' in payload:
-                donation.number_of_trees = payload['number_of_trees']
+            if 'recipientfullname' in payload:
+                transfer.recipientfullname = payload['recipientfullname']
             
-            if 'region_to_plant' in payload:
-                donation.region_to_plant = payload['region_to_plant']
-            
-            if 'description' in payload:
-                donation.description = payload['description']
+            if 'walletID' in payload:
+                transfer.walletID = payload['walletID']
             
             # save and commit the updated field in database
             db.session.commit()
 
             return ({
-                    'message': 'donations has been updated successfully',
+                    'message': 'money transfer has been updated successfully',
                     'status': 'updated successfully'
                 }), 201
 
@@ -892,26 +891,26 @@ class Donations(Resource):
 
     @donation_ns.doc(security="basicAuth")
     @jwt_required()
-    def delete(self, donation_id):
+    def delete(self, transfer_id):
         """ This method handles the DELETE request for the donation
             object.
         """
         
         try:
-            donation = Donation.query.filter_by(donation_id=donation_id).first()
+            transfer = Transfer_Money.query.filter_by(transfer_id=transfer_id).first()
             
-            if not donation:
+            if not transfer:
                 return ({
-                        'message': 'donation is not valid or not found',
+                        'message': 'money transfer is not valid or not found',
                         'status': 'api-error'
                     }), 400
 
             # now save the session
-            db.session.delete(donation)
+            db.session.delete(transfer)
             db.session.commit()
 
             return ({
-                    'message': 'donation has been deleted successfully',
+                    'message': 'money transfer has been deleted successfully',
                     'status': 'deleted successfully'
                 }), 202
         
