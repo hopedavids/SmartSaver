@@ -22,7 +22,7 @@ class User(UserMixin, db.Model):
     """In this class, the data model for the User
         will be defined.
     """
-    __tablename__ = 'donate_users'
+    __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
@@ -66,7 +66,7 @@ class Wallet(db.Model):
     def generate_wallet_id():
         return str(uuid.uuid4())
 
-    __tablename__ = 'donate_wallets'
+    __tablename__ = 'wallets'
     __table_args__ = {'extend_existing': True}
 
 
@@ -90,7 +90,7 @@ class Payment(db.Model):
     """This object defines the data model and schemas
         for payments.
     """
-    __tablename__ = 'donate_payments'
+    __tablename__ = 'payments'
     __table_args__ = {'extend_existing': True}
 
 
@@ -113,7 +113,7 @@ class Contact(db.Model):
         individual donors.
     """
 
-    __tablename__ = 'donators_contact'
+    __tablename__ = 'contacts'
     __table_args__ = {'extend_existing': True}
 
 
@@ -137,7 +137,7 @@ class Transfer_Money(db.Model):
         for donations.
     """
 
-    __tablename__ = 'transfer'
+    __tablename__ = 'transfers'
     __table_args__ = {'extend_existing': True}
 
 
