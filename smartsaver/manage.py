@@ -2,7 +2,7 @@ import os
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
-from .donate_app import app
+from .smartsaver_app import app
 from .instance import db
 
 
