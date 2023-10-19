@@ -65,10 +65,10 @@ def index():
             amount = request.form['amount']
             walletID = request.form['walletID']
             recipientemail = request.form['recipientemail']
-            recipientfullname = request.form['recipientfullnamel']
-            get_certified = request.form.get('get_certified', False)
+            recipientfullname = request.form['recipientfullname']
+            # get_certified = request.form.get('get_certified', False)
 
-            number_of_trees = amount
+            # number_of_trees = amount
             minimum_length = 20
 
             # contact details
@@ -119,7 +119,7 @@ def index():
             db.session.add_all([wallet, transfer, contact])
             db.session.commit()
 
-            # query the donation object to retrieve the id
+            # query the money transfer object to retrieve the id
             transfer = Transfer_Money.query.filter_by(user_id=user_id).first()
 
             # donate_wallet = os.environ.get('DONATE_WALLET')
@@ -156,11 +156,11 @@ def index():
                                 created_at=created_date_format,
                                 updated_at=updated_date_format
                                 )
-    except Exception as e:
-        # flash('fatal error caught from exeptions: {}'.format(str(e)), 'danger')
+    except ValueError as e:
+        flash('fatal error caught from exeptions: {}'.format(str(e)), 'danger')
         error = 'Error -> {}'.format(str(e))
         print(error)
-        return redirect(url_for("main.transaction"))
+        return redirect(url_for("main.index"))
 
 
 @main.route('/transactions')
@@ -171,7 +171,7 @@ def transaction():
     user = current_user.username
     contacts = Contact.query.filter_by(user_id=user_id).order_by(Contact.contact_id.desc()).paginate(page=page, per_page=2)
     transfers = Transfer_Money.query.filter_by(user_id=user_id).order_by(Transfer_Money.transfer_id.desc()).paginate(page=page, per_page=2)
-    
+
     offset_transfer = Transfer_Money.query.filter_by(user_id=user_id).order_by(Transfer_Money.transfer_id.desc()).all()
     wallets = Wallet.query.filter_by(user_id=user_id).all()
     
@@ -200,7 +200,7 @@ def view_certificate():
     transfer = Transfer_Money.query.filter_by(user_id=user_id).order_by(Transfer_Money.transfer_id.desc()).first()
 
     # Obtain data for the certificate (e.g., recipient's name, donation amount)
-    sender_name = contact.full_name
+    sender_name = contact.fullname
     country = contact.country
     savings = 'GHC '+ str(transfer.amount)
     certify_date = 'Certify Date: ' + datetime.now().strftime("%B %d, %Y")
@@ -272,7 +272,7 @@ def generate_certificate_content(sender_name, country, savings, certify_date):
     pdf.setFont("Helvetica-Bold", 24)
     pdf.drawCentredString(letter[0] / 2, 8 * inch, "SMART-SAVER")
 
-    pdf.drawCentredString(letter[0] / 2, 7 * inch, "Smart-Saver Issued Certificate")
+    pdf.drawCentredString(letter[0] / 2, 7 * inch, "SMART-SAVER CUSTOMER CERTIFICATE")
 
     # Add nice designs to the edges of the sheet
     pdf.setStrokeColorRGB(0.2, 0.5, 0.7)
@@ -285,11 +285,11 @@ def generate_certificate_content(sender_name, country, savings, certify_date):
     pdf.setFont("Helvetica", 14)
     pdf.drawCentredString(letter[0] / 2, 6 * inch, "This is to certify that")
     pdf.drawCentredString(letter[0] / 2, 5.5 * inch, sender_name)
-    pdf.drawCentredString(letter[0] / 2, 5 * inch, country)
+    pdf.drawCentredString(letter[0] / 2, 5 * inch, "from" + country)
 
-    pdf.drawCentredString(letter[0] / 2, 4 * inch, "has open a Savings Account on the Smart-Saver Platform")
-    pdf.drawCentredString(letter[0] / 2, 2.8 * inch, "with an amount of")
-    pdf.drawCentredString(letter[0] / 2, 3.5 * inch, savings)
+    pdf.drawCentredString(letter[0] / 2, 4 * inch, "Has an Investment/Savings Account on the Smart-Saver Platform")
+    # pdf.drawCentredString(letter[0] / 2, 2.8 * inch, "with an amount of")
+    pdf.drawCentredString(letter[0] / 2, 3.5 * inch, "With an amount of" + savings)
 
     pdf.setFont("Helvetica-Oblique", 12)
     pdf.drawCentredString(letter[0] / 2, 1.5 * inch, certify_date)
