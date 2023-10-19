@@ -6,11 +6,13 @@ RUN mkdir /app
 
 #add labels to the application
 LABEL maintainer="Hope Davids <hledavids@gmail.com>,\
-                Emmanuel Davids <emmanueldavids417@gmail.com>"
+                Bernard Sakyi <sakyibernard@gmail.com>\
+                Emmanuel Davids <emmanueldavids417@gmail.com>\
+                Bernard Bapanaye <Bernard@gmail.com>"
 
 LABEL version="1.0"
-LABEL description="Eco_Donate Project"
-LABEL tag="eco_donate_v1.0"
+LABEL description="smartsaverProject"
+LABEL tag="smartsaver_v1.0"
 
 # set the environment variable of buffer to True or 1
 ENV PYTHONUNBUFFERED 1
