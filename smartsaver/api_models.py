@@ -48,8 +48,6 @@ user_creation_model = api.model(
 )
 
 
-
-
 api_auth =  {
         "username": fields.String,
         "email": fields.String,
