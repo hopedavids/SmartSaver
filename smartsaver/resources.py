@@ -10,7 +10,7 @@ from flask_restx import Resource, Namespace
 from flask_jwt_extended import jwt_required, create_access_token
 from werkzeug.security import generate_password_hash, check_password_hash
 from instances import db, login_manager, csrf, api
-from api_models import authorizations, user_model, user_creation_model, user_login_model, wallet_model, wallet_create_model, payment_model, contact_model, contact_update_model, money transfer_model, money transfer_update_model
+from api_models import authorizations, user_model, user_creation_model, user_login_model, wallet_model, wallet_create_model, payment_model, contact_model, contact_update_model, transfer_model, transfer_update_model
 from api_auth import login
 from models import User, Wallet, Payment, Contact, Transfer_Money
 
@@ -20,19 +20,14 @@ from models import User, Wallet, Payment, Contact, Transfer_Money
 """
 
 
-
-
 # define namespaces for the views
 auth_ns = Namespace('authenticate', description="Login Endpoint", authorizations=authorizations)
 user_ns = Namespace('user', description="All user operations.", authorizations=authorizations)
 wallet_ns = Namespace('wallet', description="Wallet information", authorizations=authorizations)
 pay_ns = Namespace('payment', description="All payments operations", authorizations=authorizations)
 contact_ns = Namespace('contact', description="All Contact informations", authorizations=authorizations)
-transfer_ns = Namespace('money transfer', description="money transfers operation", authorizations=authorizations)
+transfer_ns = Namespace('transfer', description="money transfers operation", authorizations=authorizations)
 # api_ns = Namespace('api', description='API namespace')
-
-
-
 
 
 @login_manager.user_loader
@@ -683,7 +678,7 @@ class Money_Transfer(Resource):
     """
 
     @transfer_ns.doc(security="basicAuth")
-    @transfer_ns.marshal_list_with(money transfer_model)
+    @transfer_ns.marshal_list_with(transfer_model)
     @jwt_required()
     def get(self):
         """This method handles the HTTP GET method and provides the
@@ -703,7 +698,7 @@ class Money_Transfer(Resource):
     
     
     @transfer_ns.doc(security="basicAuth")
-    @transfer_ns.expect(money transfer_model)
+    @transfer_ns.expect(transfer_model)
     @jwt_required()
     def post(self):
         """ This method handles HTTP POST Request to the money transfer Object"""
@@ -779,7 +774,7 @@ class Money_Transfer(Resource):
 
 @transfer_ns.route('/<int:transfer_id>')
 class Transfer_Money(Resource):
-    """This is an extension of the money transfers that handles specific
+    """ This is an extension of the money transfers that handles specific
         money transfers and HTTP methods.
     """
 
