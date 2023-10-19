@@ -227,7 +227,7 @@ def email_certificate():
 
 
         # Obtain data for the certificate (e.g., recipient's name, donation amount)
-        sender_name = contact.full_name
+        sender_name = contact.fullname
         country = contact.country
         savings = 'GHC '+ str(transfer.amount)
         certify_date = 'Certify Date: ' + datetime.now().strftime("%B %d, %Y")
@@ -285,11 +285,11 @@ def generate_certificate_content(sender_name, country, savings, certify_date):
     pdf.setFont("Helvetica", 14)
     pdf.drawCentredString(letter[0] / 2, 6 * inch, "This is to certify that")
     pdf.drawCentredString(letter[0] / 2, 5.5 * inch, sender_name)
-    pdf.drawCentredString(letter[0] / 2, 5 * inch, "from" + country)
+    pdf.drawCentredString(letter[0] / 2, 5 * inch, "from " + country)
 
-    pdf.drawCentredString(letter[0] / 2, 4 * inch, "Has an Investment/Savings Account on the Smart-Saver Platform")
+    pdf.drawCentredString(letter[0] / 2, 4 * inch, "Has an Investment/Savings Account on the Smart-Saver Platform ")
     # pdf.drawCentredString(letter[0] / 2, 2.8 * inch, "with an amount of")
-    pdf.drawCentredString(letter[0] / 2, 3.5 * inch, "With an amount of" + savings)
+    # pdf.drawCentredString(letter[0] / 2, 3.5 * inch, "With an amount of " + savings)
 
     pdf.setFont("Helvetica-Oblique", 12)
     pdf.drawCentredString(letter[0] / 2, 1.5 * inch, certify_date)
