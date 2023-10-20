@@ -1,11 +1,11 @@
 iso_env
 tests
-donate/.env
-donate/.flaskenv
-donate/certify
-donate/flask_session
+smartsaver/.env
+smartsaver/.flaskenv
+smartsaver/certify
+smartsaver/flask_session
 .vscode
 
-donate/__pycache__/
-donate/migrations/__pycache__/
-donate/migrations/versions/__pycache__/
+smartsaver/__pycache__/
+smartsaver/migrations/__pycache__/
+smartsaver/migrations/versions/__pycache__/
