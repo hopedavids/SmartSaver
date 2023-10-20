@@ -1,0 +1,93 @@
+{% extends 'admin/admin_succor.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block user %} {{user}} {% endblock %}
+
+  {% block content %}
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div style="color: white;" class="alert alert-{{ category }}" role="alert">
+      <strong>Heya {{ user }}: </strong> {{ message }} !</span>
+    </div>
+  {% endfor %}
+  {% endwith %}
+    
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header pb-0">
+            <h6>Authors table</h6>
+          </div>
+          <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-uppercase text-secondary text-s font-weight-bolder opacity-7">Username / Wallet</th>
+                    <th class="text-uppercase text-secondary text-s font-weight-bolder opacity-7 ps-2">Balance</th>
+                    <th class="text-center text-uppercase text-secondary text-s font-weight-bolder opacity-7">Transaction Date</th>
+                    <th class="text-center text-uppercase text-secondary text-s font-weight-bolder opacity-7">Previous_balance</th>
+                    <th class="text-center text-uppercase text-secondary text-s font-weight-bolder opacity-7">created_at</th>
+
+                    <th class="text-secondary opacity-7"></th>
+                  </tr>
+                </thead>
+                {% for donation in donations%}
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        <!-- <div>
+                          <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1">
+                        </div> -->
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-m">{{ donation.user.username }}</h6>
+                          <!-- <p class="text-s text-secondary mb-0">{{ donation.get_certified }}</p> -->
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="text-m font-weight-bold mb-0">{{ donation.amount }}</p>
+
+                    </td>
+                    <td class="align-middle text-center text-sm">
+                     <p class="text-m font-weight-bold mb-0">{{ donation.tree_spieces }}</p>
+                    </td>
+                    <td class="align-middle text-center text-sm">
+                        <p class="text-m font-weight-bold mb-0">{{ donation.number_of_trees }}</p>
+                    </td>
+                    <td class="align-middle text-center text-sm">
+                      <p class="text-m font-weight-bold mb-0">{{ donation.region_to_plant }}</p>
+
+                    </td>
+                    <td class="align-middle text-center text-sm">
+                      <p class="text-m font-weight-bold mb-0">{{ donation.description }}</p>
+  
+                      </td>
+                    <td class="align-middle text-center">
+                      <span class="text-secondary text-m font-weight-bold">{{ donation.timestamp }}</span>
+                    </td>
+                    <td class="align-middle">
+                      <a href="javascript:;" class="text-secondary font-weight-bold text-m" data-toggle="tooltip" data-original-title="Edit user">
+                        Edit
+                      </a>
+                      <a href="javascript:;" class="text-secondary font-weight-bold text-m" data-toggle="tooltip" data-original-title="Edit user">
+                        Delete
+                      </a>
+                    </td>
+                  </tr>
+        
+                  </tr>
+                </tbody>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  {% endblock %}

@@ -1,0 +1,145 @@
+{% extends 'backend/backend_succor.html' %}
+
+
+{% block title %} Donations {% endblock %}
+{% block user %} {{user}} {% endblock %}
+
+
+
+  {% block content %}
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div style="color: white;" class="alert alert-{{ category }}" role="alert">
+      <strong>Hey {{ user }}: </strong> {{ message }} !</span>
+    </div>
+  {% endfor %}
+  {% endwith %}
+
+    <br>
+
+    <div class="row">
+      <div class="col-md-7 mt-4">
+        <div class="card">
+          <div class="card-header pb-0 px-3">
+            <h6 class="mb-0">Transaction Information</h6>
+          </div>
+        {% for transfer, contact in data %}  
+          <div class="card-body pt-4 p-3">
+            <ul class="list-group">
+              <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                <div class="d-flex flex-column">
+                  <h6 class="mb-3 text-sm">{{ contact.fullname }}</h6>
+                  <span class="mb-2 text-xs">Country:  <span class="text-dark font-weight-bold ms-sm-2">{{ contact.country }}</span></span>
+                  <span class="mb-2 text-xs">Amount Sent: <span class="text-dark ms-sm-2 font-weight-bold">GHC {{ transfer.amount }}</span></span>
+                  <span class="mb-2 text-xs">Address: <span class="text-dark ms-sm-2 font-weight-bold">{{ contact.address }}</span></span>
+                  <span class="mb-2 text-xs">Recipient Name:  <span class="text-dark ms-sm-2 font-weight-bold">{{ transfer.recipientfullname }}</span></span>
+                  <span class="mb-2 text-xs">Recipient Email:  <span class="text-dark ms-sm-2 font-weight-bold">{{ transfer.recipientemail }}</span></span>
+                </div>
+                <!-- <div class="ms-auto text-end">
+                  <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="javascript:;"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                  <a class="btn btn-link text-dark px-3 mb-0" href="javascript:;"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
+                </div> -->
+              </li>
+            </ul>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+      
+     
+      <div class="col-md-5 mt-4">
+       
+        <div class="card h-100 mb-4">
+          
+          <div class="card-header pb-0 px-3">
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="mb-0">Your Transaction's</h6>
+              </div>
+        {% for wallet, transfer in transactions %}
+              <div class="col-md-6 d-flex justify-content-end align-items-center">
+                <i class="far fa-calendar-alt me-2"></i>
+                <small>{{ transfer.timestamp }}</small>
+              </div>
+            </div>
+          </div>
+          <div class="card-body pt-4 p-3">
+            <h6 class="text-uppercase text-body text-xs font-weight-bolder mb-3">Payment Details</h6>
+            <ul class="list-group">
+              <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                <div class="d-flex align-items-center">
+                  <button class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-arrow-down"></i></button>
+                  <div class="d-flex flex-column">
+                    <h6 class="mb-1 text-dark text-sm">Money Transfer</h6>
+                    <span class="text-xs">{{ transfer.timestamp }}</span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold">
+                  - $ {{ transfer.amount }}
+                </div>
+              </li>
+              <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                <div class="d-flex align-items-center">
+                  <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-arrow-up"></i></button>
+                  <div class="d-flex flex-column">
+                    <h6 class="mb-1 text-dark text-sm">Credit</h6>
+                    <span class="text-xs">{{ wallet.updated_at }}</span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
+                  + $ {{ wallet.current_balance }}
+                </div>
+              </li>
+
+              <br>
+              <h6 class="text-uppercase text-body text-xs font-weight-bolder mb-3">Account Details</h6>
+
+              <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                <div class="d-flex align-items-center">
+                  <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-arrow-up"></i></button>
+                  <div class="d-flex flex-column">
+                    <h6 class="mb-1 text-dark text-sm">Current Balance</h6>
+                    <span class="text-xs">{{ wallet.updated_at }}</span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
+                  + $ {{ wallet.current_balance }}
+                </div>
+              </li>
+
+              <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                <div class="d-flex align-items-center">
+                  <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-arrow-up"></i></button>
+                  <div class="d-flex flex-column">
+                    <h6 class="mb-1 text-dark text-sm">Previous Balance</h6>
+                    <span class="text-xs">{{ wallet.created_at }}</span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
+                  + $ {{ wallet.previous_balance }}
+                </div>
+              </li>
+            </ul>
+    
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+   
+    </div>
+    <br>
+    <br>
+    <div align="center">
+      <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        More
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" href="{{ url_for('main.view_certificate') }}">Get Membership Certificate</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('main.email_certificate') }}">Email me my certificate</a></li>
+      </ul>
+  </div>
+
+    <br>
+
+  {% endblock %}
