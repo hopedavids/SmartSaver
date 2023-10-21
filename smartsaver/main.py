@@ -141,7 +141,7 @@ def index():
 
             return redirect(url_for('main.gratitude'))
 
-        tree_images = ['tree.jpeg', 'tree1.jpg', 'tree3.jpg', 'tree4.jpg', 'tree5.jpg', 'tree6.jpg', 'tree7.jpg', 'tree8.jpg']
+        # tree_images = ['tree.jpeg', 'tree1.jpg', 'tree3.jpg', 'tree4.jpg', 'tree5.jpg', 'tree6.jpg', 'tree7.jpg', 'tree8.jpg']
 
         random_tree = random.choice(tree_images)
 
