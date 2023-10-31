@@ -143,10 +143,9 @@ def index():
 
         # tree_images = ['tree.jpeg', 'tree1.jpg', 'tree3.jpg', 'tree4.jpg', 'tree5.jpg', 'tree6.jpg', 'tree7.jpg', 'tree8.jpg']
 
-        random_tree = random.choice(tree_images)
+        # random_tree = random.choice(tree_images)
 
         return render_template('backend/index.html',
-                                tree=random_tree,
                                 user=user,
                                 email=user_email,
                                 created_date=created_user_format,
