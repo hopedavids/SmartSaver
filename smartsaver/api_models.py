@@ -43,7 +43,7 @@ user_creation_model = api.model(
         "username": fields.String(required=True),
         "email": fields.String(required=True),
         "password": fields.String(required=True),
-        "email_confirm": fields.Boolean(default=False)
+        "email_confirm": fields.Boolean(required=True)
     }
 )
 
