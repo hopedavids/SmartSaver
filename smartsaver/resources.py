@@ -672,7 +672,7 @@ class Contact_Details(Resource):
 
 
 @transfer_ns.route('')
-class Money_Transfer(Resource):
+class Transfer(Resource):
     """This object defines the routes and views for money transfers and
         handles the defined resources.
     """
@@ -687,7 +687,7 @@ class Money_Transfer(Resource):
         try:
             transfer = Transfer_Money.query.all()
 
-            return transfer
+            return transfer, 200
 
         except Exception as e:
              return {
@@ -773,7 +773,7 @@ class Money_Transfer(Resource):
     
 
 @transfer_ns.route('/<int:transfer_id>')
-class Transfer_Money(Resource):
+class Transfer(Resource):
     """ This is an extension of the money transfers that handles specific
         money transfers and HTTP methods.
     """
